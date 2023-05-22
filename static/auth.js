@@ -1,21 +1,25 @@
-const registerForm = document.querySelector(".register-form");
+const registerForm = document.getElementById("register-form");
 
-registerForm?.addEventListener("sumbit",(e) => {
+registerForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const {login,password,passwordRepeat} = registerForm;
+    const { login, password, passwordRepeat } = registerForm;
 
-    if(password.value != passwordRepeat.value) {
-        return alert("Ban")
+    if (password.value != passwordRepeat.value) {
+        return alert("Passwords not match");
     }
+
     const user = JSON.stringify({
         login: login.value,
         password: password.value
     });
+
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "api/register");
-    xhr.send(user)
-    alert(xhr.response)
-    if(xhr.response == "!ban") {
-        window.open("/login","self");
+    xhr.send(user);
+    xhr.onload = function () {
+        alert(xhr.response)
+        if (xhr.response == "Register is successful") {
+            window.open("/login", "_self");
+        }
     }
 })
